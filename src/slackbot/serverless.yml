@@ -1,0 +1,42 @@
+service:
+  name: hello-bot
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-mocha-plugin
+  - serverless-plugin-export-endpoints
+
+package:
+  include:
+    - mocks/**/*.json
+  exclude:
+    - "test/**/*"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  versionFunctions: false
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-2'}
+  timeout: 30
+  environment:
+    env_name: ${self:provider.stage}
+    slackSecret: ${self:custom.env.slackSecret, ''}
+  logs:
+    restApi: true
+
+custom:
+  env: ${file(env/${self:provider.stage}-${self:provider.region}.yml)}
+  logSubscription: ${self:custom.env.logSubscription}
+  serverless-offline:
+    port: 8000
+
+functions:
+  helloBot:
+    handler: src/controller/helloBotController.main
+    events:
+      - http:
+          method: post
+          path: helloBot
+          authorizer: ${self:custom.env.api-gateway-authorizer, ''}

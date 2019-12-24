@@ -1,0 +1,41 @@
+{
+  "name": "hello-slackbot",
+  "version": "1.0.0",
+  "description": "Example Slackbot",
+  "main": "handler.js",
+  "scripts": {
+    "test": "mochapack **/*.spec.ts",
+    "test-watch": "mochapack --watch **/*.spec.ts"
+  },
+  "dependencies": {
+    "@sailplane/injector": "^1.0.0",
+    "@sailplane/logger": "^1.0.0",
+    "axios": "0.19.0",
+    "serverless": "^1.60.1",
+    "serverless-plugin-log-subscription": "^1.2.0",
+    "source-map-support": "^0.5.10",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.27",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^8.10.50",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "mochapack": "^1.1.2",
+    "moment": "^2.24.0",
+    "serverless-mocha-plugin": "^1.10.0",
+    "serverless-offline": "^5.9.0",
+    "serverless-plugin-export-endpoints": "^0.1.2",
+    "serverless-webpack": "^5.3.1",
+    "sinon": "^7.3.2",
+    "ts-loader": "^5.3.3",
+    "ts-node": "^8.3.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.2.4",
+    "webpack": "^4.36.1"
+  },
+  "author": "Alex Ayers",
+  "license": "MIT"
+}
