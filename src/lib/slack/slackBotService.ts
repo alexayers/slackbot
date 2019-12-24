@@ -23,7 +23,6 @@ export class SlackBotService {
                 this._callBacks.set(this._slackBotRules.commands[i].action, this._slackBotRules.commands[i].callBack);
             }
         }
-
     }
 
     public async processRequest(slackPayload: SlackPayload) {
@@ -31,6 +30,9 @@ export class SlackBotService {
         return await this._callBacks.get(botAction.action)(this, botAction);
     }
 
+    /*
+        Posts a message back to the slack channel from which the message originated.
+     */
 
     async postMessage(text: string) : Promise<any> {
 
@@ -40,6 +42,10 @@ export class SlackBotService {
         });
     }
 
+    /*
+        Extracts the slack specific event information from a Lambda Event/
+     */
+
     extractPayload(event: APIGatewayEvent) : SlackPayload {
         let body : any = event.body;
         let slackPayload : SlackPayload = JSON.parse(body) as SlackPayload;
@@ -48,6 +54,10 @@ export class SlackBotService {
 
         return slackPayload;
     }
+
+    /*
+        Helper function to make it easier to deal with messages chatted directly at the bot.
+     */
 
     private static simplifyMessage(slackPayload: SlackPayload) : SlackPayload {
         let processedMessage : string = "";

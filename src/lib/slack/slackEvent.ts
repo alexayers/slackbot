@@ -1,4 +1,6 @@
-
+/*
+    Wrappers to make it easier to deal with Slack payloads. Nothing terribly interesting.
+ */
 
 export interface SlackPayload {
     token: string,

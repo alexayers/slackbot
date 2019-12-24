@@ -8,6 +8,12 @@ export interface BotAction {
 
 export class BotRuleService {
 
+    /*
+        This method handles taking a string and finding all the tokens in the string. Each
+        word is considered a token, unless quotes are used in which case everything within the quotes
+        is considered a single token
+     */
+
     public lex(message: string): string [] {
         let tokens: Array<string> = [];
         let token: string = "";
@@ -35,6 +41,13 @@ export class BotRuleService {
 
         return tokens;
     }
+
+    /*
+        Checks to see if the phrase the slackbot received matches an existing rule.
+        If a rule match is found, then the variables are extracted and stored.
+
+        Else ActionNotDefined is set as the botAction.
+     */
 
     public parser(tokens: Array<string>, slackBotRules: SlackBotRules): BotAction {
         let slackAction: BotAction;
