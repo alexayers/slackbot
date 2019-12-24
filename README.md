@@ -1,4 +1,4 @@
-#Creating a SlackBot
+# Creating a SlackBot
 
 1. Open slack
 2. Select "Customize Slack" from the application menu
@@ -23,7 +23,7 @@ You will need to install your application in order to get credentials needed for
 6. Update the variable "slackSecret" with the Oauth Access Token
 7. Rename this file to be <ProjectRoot>/src/slackbot/env/dev-us-east-2.yml
 
-###Scopes
+### Scopes
 
 You will need to give your bot write permissions to your slack channel
 
@@ -32,7 +32,7 @@ You will need to give your bot write permissions to your slack channel
 3. Add the permission "chat:write:bot"
 4. Click "Reinstall App"
 
-###Deploy your Application
+### Deploy your Application
 
 You will now want to deploy your app before you finish setting things up.
 
@@ -41,7 +41,7 @@ You will now want to deploy your app before you finish setting things up.
 3. Once this finishes you should see a single endpoint, copy this end point. Example:  https://abcd12334.execute-api.us-east-2.amazonaws.com/dev/helloBot
 
 
-###Event Subscriptions
+### Event Subscriptions
 
 In order for your bot to understand what is happening within Slack you'll need to enable Events
 
@@ -50,7 +50,7 @@ In order for your bot to understand what is happening within Slack you'll need t
 3. Paste the end point you copied into the "Request URL" field
 4. This should return Verified with a checkmark
 
-###Subscribe to bot events
+### Subscribe to bot events
 
 You'll now want to subscribe events you want your bot to reply to when it sees them. A good one is "app_mention" which will cause your bot reply when someone @botname
 
