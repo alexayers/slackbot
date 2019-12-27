@@ -49,6 +49,8 @@ export class SlackBotService {
     extractPayload(event: APIGatewayEvent): SlackPayload {
         let body: any = event.body;
         let slackPayload: SlackPayload = JSON.parse(body) as SlackPayload;
+
+        // This will be used to make sending the message back to Slack more straight forward.
         this._slackChannel = slackPayload.event.channel;
         slackPayload = SlackBotService.simplifyMessage(slackPayload);
 
@@ -63,6 +65,12 @@ export class SlackBotService {
         let processedMessage: string = "";
 
         for (let i = 0; i < slackPayload.event.blocks[0].elements[0].elements.length; i++) {
+
+            /*
+                Ignoring users mentioned within the message to the bot. We are also doing this because if things like
+                URLs and email addresses contain special formatting that the bot doesn't need to care about to process
+                a message.
+             */
             if (slackPayload.event.blocks[0].elements[0].elements[i].type != SlackElementEnum.USER) {
                 processedMessage += slackPayload.event.blocks[0].elements[0].elements[i].text;
             }

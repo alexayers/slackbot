@@ -15,7 +15,7 @@ export async function processSlackEvent(slackPayload: SlackPayload) {
     try {
         await bot.processRequest(slackPayload);
     } catch (e) {
-        console.log(e);
+        // Send a generic error message back to Slack.
         await bot.error(e);
     }
 }
@@ -28,6 +28,10 @@ export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent, _cont
     let slackPayload: SlackPayload = bot.extractPayload(event);
 
     await processSlackEvent(slackPayload);
+
+    /*
+        Slack API requires that you return the body back to the Slack API.
+     */
 
     return {
         statusCode: 200,
