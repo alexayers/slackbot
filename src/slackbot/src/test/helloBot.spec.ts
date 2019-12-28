@@ -1,22 +1,16 @@
 import {HelloBot} from "../bot/helloBot";
-import {
-    SlackBlockType,
-    SlackElementEnum,
-    SlackElementType,
-    SlackEventType,
-    SlackPayload
-} from "@slackBotLib/slack/slackEvent";
 import {BotAction} from "@slackBotLib/slack/botRuleService";
 import { expect } from "chai";
 
 
 describe("HelloBot Test", function () {
     let helloBot: HelloBot;
-    let slackPayload: SlackPayload;
+
 
     before(() => {
         helloBot = new HelloBot();
 
+        /*
         slackPayload = {
             token: "abcd",
             team_id: "abcd",
@@ -50,11 +44,11 @@ describe("HelloBot Test", function () {
             },
 
         }
-
+*/
     });
 
     it("Success when user types \"say [phrase]\"", async function () {
-        let botAction : BotAction = helloBot.getBotAction(slackPayload);
+        let botAction : BotAction = helloBot.getBotAction();
         expect(botAction.action).to.eq("helloWorld");
         expect(botAction.variables.get("phrase")).to.eq("Hello World!");
 

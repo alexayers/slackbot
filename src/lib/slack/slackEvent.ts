@@ -51,6 +51,8 @@ export interface SlackBlock {
 export interface SlackEvent {
     client_msg_id: string,
     type: SlackEventType,
+    subtype?: string,
+    bot_id?: string,
     text: string,
     user: string,
     ts: string,

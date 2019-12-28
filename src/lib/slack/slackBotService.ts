@@ -10,6 +10,7 @@ export class SlackBotService {
     private _axiosInstance: AxiosInstance;
     private _botRuleService: BotRuleService;
     private _slackChannel: string;
+    static _message: string;
     static _slackUser: SlackUser;
     private readonly _slackBotRules: SlackBotRules;
     protected _callBacks: Map<string, Function> = new Map<string, Function>();
@@ -27,8 +28,9 @@ export class SlackBotService {
         }
     }
 
-    public async processRequest(slackPayload: SlackPayload) : Promise<void>  {
-        let botAction: BotAction = this.getBotAction(slackPayload);
+    public async processRequest() : Promise<void>  {
+
+        let botAction: BotAction = this.getBotAction();
         await this._callBacks.get(botAction.action)(this, botAction);
     }
 
@@ -74,6 +76,12 @@ export class SlackBotService {
     private static simplifyMessage(slackPayload: SlackPayload): SlackPayload {
         let processedMessage: string = "";
 
+        console.log(slackPayload);
+
+        if (slackPayload.event.blocks[0] === undefined || slackPayload.event.blocks[0].elements[0] === undefined) {
+            return slackPayload;
+        }
+
         for (let i = 0; i < slackPayload.event.blocks[0].elements[0].elements.length; i++) {
 
             /*
@@ -86,7 +94,7 @@ export class SlackBotService {
             }
         }
 
-        slackPayload.event.blocks[0].elements[0].elements[1].text = processedMessage;
+        SlackBotService._message = processedMessage.trim();
 
         return slackPayload;
     }
@@ -96,12 +104,11 @@ export class SlackBotService {
         this.postMessage("I'm sorry, I don't know how to handle that request.");
     }
 
-    getMessage(slackPayload: SlackPayload): string {
-        return slackPayload.event.blocks[0].elements[0].elements[1].text.trim();
+    getMessage(): string {
+        return SlackBotService._message;
     }
 
-    getBotAction(slackPayload: SlackPayload): BotAction {
-        let message: string = this.getMessage(slackPayload);
-        return this._botRuleService.parser(this._botRuleService.lex(message), this._slackBotRules);
+    getBotAction(): BotAction {
+        return this._botRuleService.parser(this._botRuleService.lex(SlackBotService._message), this._slackBotRules);
     }
 }

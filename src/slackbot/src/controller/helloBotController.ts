@@ -10,10 +10,10 @@ const bot: HelloBot = new HelloBot();
     also largely remain generic.
  */
 
-export async function processSlackEvent(slackPayload: SlackPayload) {
+export async function processSlackEvent() {
 
     try {
-        await bot.processRequest(slackPayload);
+        await bot.processRequest();
     } catch (e) {
         // Send a generic error message back to Slack.
         await bot.error(e);
@@ -26,12 +26,12 @@ export async function processSlackEvent(slackPayload: SlackPayload) {
 
 export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent, _context) => {
     console.info("I got a message");
-
     let slackPayload: SlackPayload = await bot.extractPayload(event);
 
-    console.info(slackPayload);
-
-    await processSlackEvent(slackPayload);
+    // Don't process messages from other bots.
+    if (slackPayload.event.bot_id === undefined) {
+        await processSlackEvent();
+    }
 
     /*
         Slack API requires that you return the body back to the Slack API.

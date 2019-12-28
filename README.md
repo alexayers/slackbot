@@ -29,7 +29,12 @@ You will need to give your bot write permissions to your slack channel
 
 1. Remaining on the OAuth & Permissions 
 2. Click "Add an OAuth Scope"
-3. Add the permission "chat:write:bot"
+3. Add the following permissions:
+    - bot
+    - chat:write:bot
+    - im:read
+    - im:write
+    - users:read
 4. Click "Reinstall App"
 
 ### Deploy your Application
@@ -55,7 +60,9 @@ In order for your bot to understand what is happening within Slack you'll need t
 You'll now want to subscribe events you want your bot to reply to when it sees them. A good one is "app_mention" which will cause your bot reply when someone @botname
 
 1. Click "Add Bot User Event"
-2. Add "app_mention"
+2. Add the following events:
+    - app_mention
+    - message.im
 3. Click "Save Changes"
 
 
