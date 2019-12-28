@@ -3,13 +3,15 @@ import {APIGatewayEvent} from "aws-lambda";
 import {SlackElementEnum, SlackPayload} from "./slackEvent";
 import {BotAction, BotRuleService} from "./botRuleService";
 import {SlackBotRules} from "./slackBot";
+import {SlackUser} from "./slackUser";
 
 
 export class SlackBotService {
     private _axiosInstance: AxiosInstance;
     private _botRuleService: BotRuleService;
     private _slackChannel: string;
-    private _slackBotRules: SlackBotRules;
+    static _slackUser: SlackUser;
+    private readonly _slackBotRules: SlackBotRules;
     protected _callBacks: Map<string, Function> = new Map<string, Function>();
 
     constructor(slackBotRules: SlackBotRules) {
@@ -25,9 +27,9 @@ export class SlackBotService {
         }
     }
 
-    public async processRequest(slackPayload: SlackPayload) {
+    public async processRequest(slackPayload: SlackPayload) : Promise<void>  {
         let botAction: BotAction = this.getBotAction(slackPayload);
-        return await this._callBacks.get(botAction.action)(this, botAction);
+        await this._callBacks.get(botAction.action)(this, botAction);
     }
 
     /*
@@ -42,16 +44,24 @@ export class SlackBotService {
         });
     }
 
+    async getSlackUser(userID: string) : Promise<void> {
+        let response :any = await this._axiosInstance.get("https://slack.com/api/users.info?token=" + process.env.slackSecret + "&user=" + userID);
+        SlackBotService._slackUser = response.data;
+        console.log(SlackBotService._slackUser);
+    }
+
     /*
         Extracts the slack specific event information from a Lambda Event/
      */
 
-    extractPayload(event: APIGatewayEvent): SlackPayload {
+    async extractPayload(event: APIGatewayEvent): Promise<SlackPayload> {
         let body: any = event.body;
         let slackPayload: SlackPayload = JSON.parse(body) as SlackPayload;
 
         // This will be used to make sending the message back to Slack more straight forward.
         this._slackChannel = slackPayload.event.channel;
+        await this.getSlackUser(slackPayload.event.user);
+
         slackPayload = SlackBotService.simplifyMessage(slackPayload);
 
         return slackPayload;
@@ -81,7 +91,7 @@ export class SlackBotService {
         return slackPayload;
     }
 
-    async error(e: any) {
+    async error(e: any) : Promise<void> {
         console.error(e);
         this.postMessage("I'm sorry, I don't know how to handle that request.");
     }

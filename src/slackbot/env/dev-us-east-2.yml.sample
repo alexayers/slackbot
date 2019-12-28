@@ -1,5 +1,1 @@
-logSubscription:
-  enabled: true
-  destinationArn:
-  roleArn:
 slackSecret: <OAUTH-CREDENTIALS>

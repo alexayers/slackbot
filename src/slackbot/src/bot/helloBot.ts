@@ -27,8 +27,12 @@ export class HelloBot extends SlackBotService {
         }
     }
 
-    private static async speak(dhpBot: HelloBot, botAction: BotAction) {
-        return await dhpBot.postMessage(botAction.variables.get("phrase"));
+    /*
+        This is the callback that is invoked whenever say [phrase] is seen by the bot.
+     */
+
+    private static async speak(dhpBot: HelloBot, botAction: BotAction) : Promise<void> {
+        return await dhpBot.postMessage(SlackBotService._slackUser.user.name + " " +  botAction.variables.get("phrase"));
     }
 
 

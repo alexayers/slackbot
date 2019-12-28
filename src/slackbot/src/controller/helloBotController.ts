@@ -3,7 +3,7 @@ import {HelloBot} from "../bot/helloBot";
 import {SlackPayload} from "@slackBotLib/slack/slackEvent";
 
 // Create your instance of the bot
-var bot : HelloBot = new HelloBot();
+const bot: HelloBot = new HelloBot();
 
 /*
     This is specialized call into your bot. Broken out to make it easier to unit test. This will
@@ -25,7 +25,11 @@ export async function processSlackEvent(slackPayload: SlackPayload) {
  */
 
 export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent, _context) => {
-    let slackPayload: SlackPayload = bot.extractPayload(event);
+    console.info("I got a message");
+
+    let slackPayload: SlackPayload = await bot.extractPayload(event);
+
+    console.info(slackPayload);
 
     await processSlackEvent(slackPayload);
 

@@ -15,10 +15,18 @@ package:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   versionFunctions: false
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-2'}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+      Resource:
+        - "arn:aws:logs:*:*:*"
   timeout: 30
   environment:
     env_name: ${self:provider.stage}
@@ -28,7 +36,6 @@ provider:
 
 custom:
   env: ${file(env/${self:provider.stage}-${self:provider.region}.yml)}
-  logSubscription: ${self:custom.env.logSubscription}
   serverless-offline:
     port: 8000
 
