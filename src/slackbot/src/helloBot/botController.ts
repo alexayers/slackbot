@@ -1,4 +1,4 @@
-import {APIGatewayEvent, APIGatewayProxyHandler} from "aws-lambda";
+import {APIGatewayEvent, APIGatewayProxyHandler, Context} from "aws-lambda";
 import {HelloBot} from "./helloBot";
 import {SlackPayload} from "@slackBotLib/slack/slackEvent";
 
@@ -7,7 +7,7 @@ import {SlackPayload} from "@slackBotLib/slack/slackEvent";
    of the instance of your bot on line 13.
  */
 
-export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent, _context) => {
+export const main: APIGatewayProxyHandler = async (event: APIGatewayEvent, _context : Context) => {
 
     // Create your instance of the bot
     const bot: HelloBot = new HelloBot();
