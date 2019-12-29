@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import {BotAction, BotRuleService} from "../../slack/botRuleService";
-import {SlackBotRules} from "../../slack/slackBot";
+import {BotRuleService} from "../../slack/botRuleService";
+import {BotAction, SlackBotRules} from "../../slack/slackBotInt";
 
 describe("BotRule Service Test", function () {
     let botRuleService: BotRuleService;

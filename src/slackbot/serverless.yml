@@ -41,7 +41,7 @@ custom:
 
 functions:
   helloBot:
-    handler: src/controller/helloBotController.main
+    handler: src/helloBot/botController.main
     events:
       - http:
           method: post

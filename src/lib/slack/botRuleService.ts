@@ -1,10 +1,5 @@
-import {SlackBotRules} from "./slackBot";
+import {BotAction, SlackBotRules} from "./slackBotInt";
 
-export interface BotAction {
-    action: string;
-    callBack:string;
-    variables: Map<string,any>;
-}
 
 export class BotRuleService {
 

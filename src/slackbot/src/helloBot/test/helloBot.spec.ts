@@ -1,14 +1,14 @@
-import {expect} from "chai";
-import {SlackBot} from "../../slack/slackBot";
-import {SlackPayload} from "../../slack/slackEvent";
+import {HelloBot} from "../helloBot";
+import { expect } from "chai";
+import {BotAction} from "@slackBotLib/slack/slackBotInt";
 
-
-describe("Slack Service Test", function () {
+describe("HelloBot Test", function () {
+    let helloBot: HelloBot;
     let event: any;
-    let slackService: SlackBot;
 
-    before(() => {
-        slackService = new SlackBot(null);
+    before(async() => {
+        helloBot = new HelloBot();
+
 
         event = {
             resource: '/helloBot',
@@ -96,21 +96,19 @@ describe("Slack Service Test", function () {
                     domainName: 'abcd.execute-api.us-east-2.amazonaws.com',
                     apiId: 'abcd'
                 },
-            body: '{"token":"abcd","team_id":"abcd","api_app_id":"abcd","event":{"client_msg_id":"abcd-abcd-abcd-abcd","type":"app_mention","text":"<@ABCD> this is a test","user":"ABCD","ts":"1576850751.006000","team":"ABCD","blocks":[{"type":"rich_text","block_id":"S=6","elements":[{"type":"rich_text_section","elements":[{"type":"user","user_id":"ABCD"},{"type":"text","text":" this is a test"}]}]}],"channel":"ABCD","event_ts":"1576850751.006000"},"type":"event_callback","event_id":"abcd","event_time":1576850751,"authed_users":["ABCD"]}',
+            body: '{"token":"abcd","team_id":"abcd","api_app_id":"abcd","event":{"client_msg_id":"abcd-abcd-abcd-abcd","type":"app_mention","text":"<@ABCD> say “Hello World!“","user":"ABCD","ts":"1576850751.006000","team":"ABCD","blocks":[{"type":"rich_text","block_id":"S=6","elements":[{"type":"rich_text_section","elements":[{"type":"user","user_id":"ABCD"},{"type":"text","text":" this is a test"}]}]}],"channel":"ABCD","event_ts":"1576850751.006000"},"type":"event_callback","event_id":"abcd","event_time":1576850751,"authed_users":["ABCD"]}',
             isBase64Encoded: false
         };
 
+       await helloBot.extractPayload(event);
     });
 
-    it("Success if user found", async function () {
-        let slackPayload: SlackPayload = await slackService.extractPayload(event);
-        expect(slackPayload.event.user).to.eq("ABCD");
-    });
+    it("Success when user types \"say [phrase]\"", async function () {
 
-    it("Success if message extracted", async function () {
-        await slackService.extractPayload(event);
-        let message: string =  slackService.getMessage();
-        expect(message).to.eq("this is a test");
-    });
+        let botAction : BotAction = helloBot.getBotAction();
+        expect(botAction.action).to.eq("helloWorld");
+        expect(botAction.variables.get("phrase")).to.eq("Hello World!");
+
+    })
 
 });
